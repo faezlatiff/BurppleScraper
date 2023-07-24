@@ -12,5 +12,5 @@ config :crawly,
     ],
     pipelines: [
             Crawly.Pipelines.JSONEncoder,
-            {Crawly.Pipelines.WriteToFile, extension: "json", folder: "./tmp"}
+            {Crawly.Pipelines.WriteToFile, extension: "ex", folder: "./tmp"}
     ]
