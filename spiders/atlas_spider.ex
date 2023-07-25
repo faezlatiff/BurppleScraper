@@ -1,27 +1,31 @@
-defmodule AtlasSpider do
+defmodule Atlas.Spider do
   use Crawly.Spider
   import Meeseeks.CSS
 
   @impl Crawly.Spider
   def base_url do
-    "http://www.burpple.com"
+    "https://www.burpple.com"
+    # "https://www.google.com"
+
   end
 
   @impl Crawly.Spider
   def init() do
+    IO.inspect("it's running")
     [
       start_urls: [
         "https://www.burpple.com/neighbourhoods/sg/chinatown"
+        # "https://www.google.com"
+
       ]
     ]
   end
 
   @impl Crawly.Spider
   def parse_item(response) do
+
     document = Meeseeks.parse(response.body)
     url = "https://www.burpple.com"
-
-    style = Meeseeks.one(document, css("#load-more-reviews"))
 
     review_list =
       Meeseeks.all(document, css(".food.card.feed-item"))
@@ -59,15 +63,5 @@ defmodule AtlasSpider do
     |> List.flatten()
 
   end
-
-  # defp load_more_request(offset) do
-  #   xhr = "https://www.burpple.com/foods/load_more?area_id=18&city_id=1&offset=#{offset}"
-
-  #   %Crawly.Request{
-  #     url: xhr,
-  #     callback: &parse_item/1,
-  #     meta: %{}
-  #   }
-  # end
 
 end

@@ -1,16 +1,17 @@
 import Config
 
 config :crawly,
-    closespider_timeout: :disabled,
-    concurrent_requests_per_domain: 100,
-    closespider_itemcount: :disabled,
+  closespider_timeout: :disabled,
+  concurrent_requests_per_domain: 1,
+  closespider_itemcount: :disabled,
+  # fetcher: {Crawly.Fetchers.Splash, [base_url: "http://localhost:8050/render.html"]},
+  middlewares: [
+    Crawly.Middlewares.DomainFilter,
+    {Crawly.Middlewares.UserAgent, user_agents: ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"]}
+  ],
+  pipelines: [
+    Crawly.Pipelines.JSONEncoder,
+    {Crawly.Pipelines.WriteToFile, extension: "json", folder: "./tmp"}
+  ]
 
-    middlewares: [
-            Crawly.Middlewares.DomainFilter,
-            Crawly.Middlewares.UniqueRequest,
-            {Crawly.Middlewares.UserAgent, user_agents: ["Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0"]}
-    ],
-    pipelines: [
-            Crawly.Pipelines.JSONEncoder,
-            {Crawly.Pipelines.WriteToFile, extension: "ex", folder: "./tmp"}
-    ]
+    # https://www.burpple.com/neighbourhoods/sg/chinatown
