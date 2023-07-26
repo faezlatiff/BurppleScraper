@@ -69,15 +69,4 @@ defmodule Atlas.Hound do
     :page_loaded
   end
 
-  # defp get_dt_now() do
-  #   utc_now = DateTime.utc_now()
-  #   timezone = "Asia/Singapore"
-  #   singapore_time = DateTime.shift_zone(utc_now, timezone)
-  #   hours = singapore_time.hour
-  #   minutes = singapore_time.minute
-  #   seconds = singapore_time.second
-
-  #   time_str = "#{hours}:#{minutes}:#{seconds}"
-
-  # end
 end
