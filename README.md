@@ -10,5 +10,8 @@ Since we need to interact with the page a little, you'll need to install a webdr
 1. Run in another terminal: `mix deps.get`
 2. Run in terminal: `iex -S mix run -e "Atlas.Hound.run"`
 
+## Configuring the Crawler
+(in progress)
+
 ## Files & Details
 `spiders/atlas_hound.ex`: A file containing the main logic of the crawler. <br />
