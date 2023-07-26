@@ -1,6 +1,7 @@
 defmodule Atlas.Spider do
   use Crawly.Spider
   import Meeseeks.CSS
+  use Hound.Helpers
 
   @impl Crawly.Spider
   def base_url do
@@ -15,8 +16,6 @@ defmodule Atlas.Spider do
     [
       start_urls: [
         "https://www.burpple.com/neighbourhoods/sg/chinatown"
-        # "https://www.google.com"
-
       ]
     ]
   end

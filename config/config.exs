@@ -1,6 +1,9 @@
 import Config
 
+config :hound, driver: "chrome_driver", browser: "chrome_headless"
+
 config :crawly,
+
   closespider_timeout: :disabled,
   concurrent_requests_per_domain: 1,
   closespider_itemcount: :disabled,
@@ -12,6 +15,7 @@ config :crawly,
   pipelines: [
     Crawly.Pipelines.JSONEncoder,
     {Crawly.Pipelines.WriteToFile, extension: "json", folder: "./tmp"}
-  ]
+  ],
+  server: true
 
     # https://www.burpple.com/neighbourhoods/sg/chinatown
