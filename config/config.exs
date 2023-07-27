@@ -17,5 +17,3 @@ config :crawly,
     {Crawly.Pipelines.WriteToFile, extension: "json", folder: "./tmp"}
   ],
   server: true
-
-    # https://www.burpple.com/neighbourhoods/sg/chinatown
