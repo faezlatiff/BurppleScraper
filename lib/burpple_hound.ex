@@ -33,7 +33,7 @@ defmodule Burpple.Hound do
 
   end
 
-  defp scrape(:scrape_limit_reached, _, _), do: IO.puts("Scraped 4000 items, scraper stopping... \nTo scrape more items, change the @limit setting.")
+  defp scrape(:scrape_limit_reached, _, _), do: IO.puts("Scraped #{@limit} items, scraper stopping... \nTo scrape more items, change the @limit setting.")
   defp scrape(:no_more_data), do: IO.puts("No more data to scrape, scraper stopping...")
 
   defp into_map({:ok, html_tree}) do
