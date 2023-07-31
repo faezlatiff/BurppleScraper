@@ -1,4 +1,4 @@
-defmodule Atlas.Hound do
+defmodule Burpple.Hound do
   use Hound.Helpers
   @base_url "https://www.burpple.com"
   @neighbourhood "chinatown"
