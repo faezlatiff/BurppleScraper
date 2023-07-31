@@ -1,9 +1,10 @@
 defmodule Burpple.Hound do
   use Hound.Helpers
   @base_url "https://www.burpple.com"
-  @neighbourhood "chinatown"
+  @neighbourhood "tuas"
   @url "https://www.burpple.com/neighbourhoods/sg/#{@neighbourhood}"
   @limit 4000
+  @file_path "./tmp/#{@neighbourhood}.json"
 
   @spec run :: list
   def run do
@@ -11,9 +12,8 @@ defmodule Burpple.Hound do
     navigate_to(@url)
 
     offset = 0
-    file_path = "./tmp/chinatown.json"
     find_all_elements(:css, ".food.card.feed-item")
-    |> scrape(file_path, offset)
+    |> scrape(@file_path, offset)
 
     Hound.end_session()
 

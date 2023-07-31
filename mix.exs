@@ -20,11 +20,8 @@ defmodule Atlas.MixProject do
 
   defp deps do
     [
-      {:meeseeks, "~> 0.17.0"},
-      {:crawly, "~> 0.15.0"},
       {:floki, "~> 0.33.0"},
-      {:hound, "~> 1.0"},
-      {:jason, "~> 1.2"}
+      {:hound, "~> 1.0"}
     ]
   end
 end
