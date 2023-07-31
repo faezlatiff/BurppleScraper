@@ -8,7 +8,7 @@ defmodule Atlas.Hound do
     navigate_to(@url)
 
     offset = 0
-    file_path = "./tmp/burpple_scraper.json"
+    file_path = "./tmp/chinatown.json"
     find_all_elements(:css, ".food.card.feed-item")
     |> scrape(file_path, offset)
 
@@ -17,15 +17,18 @@ defmodule Atlas.Hound do
   end
 
   defp scrape(list, file_path, offset) do
-    Enum.drop(list, offset)
-    |> Enum.each(fn element ->
+    IO.inspect(offset)
+    Enum.drop(list, offset) |>
+     Enum.each(fn element ->
         post_map =
           inner_html(element)
           |> Floki.parse_document()
           |> into_map()
-          |> check_date()
+          # |> check_date()
           |> maybe_store_and_click(file_path, offset)
     end)
+    check_visible_and_click(file_path, offset)
+
   end
 
   defp into_map({:ok, html_tree}) do
@@ -38,7 +41,7 @@ defmodule Atlas.Hound do
 
     %{
       name =>
-      %{"name" => name,
+      %{
         "address" => address,
         "title" => title,
         "body" => body,
@@ -72,7 +75,6 @@ defmodule Atlas.Hound do
 
   defp maybe_store_and_click(map, file_path, offset) when is_map(map) do
     File.write(file_path, Jason.encode!(map) <> "\n", [:append])
-    check_visible_and_click(file_path,offset)
   end
 
   defp maybe_store_and_click(_, file_path, offset), do: check_visible_and_click(file_path,offset)
@@ -85,11 +87,22 @@ defmodule Atlas.Hound do
     case button_visibility do
       "visible" ->
         click(button)
+        :timer.sleep(2000)
         find_all_elements(:css, ".food.card.feed-item")
         |> scrape(file_path, offset + 12)
       _ ->
         Hound.end_session()
     end
   end
+
+  # defp wait_page_load() do
+  #   :timer.sleep(100)
+  #   case execute_script("return document.readyState") do
+  #     "loading" ->
+  #       wait_page_load()
+  #     _ -> true
+  #   end
+  # end
+
 
 end
