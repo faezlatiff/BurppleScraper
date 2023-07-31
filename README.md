@@ -8,10 +8,10 @@ Since we need to interact with the page a little, you'll need to install a webdr
 2. Run in terminal: `chromedriver`
 ### Run the scraper
 1. Run in another terminal: `mix deps.get`
-2. Run in terminal: `iex -S mix run -e "Atlas.Hound.run"`
+2. Run in terminal: `iex -S mix run -e "Burpple.Hound.run"`
 
 ## Configuring the Crawler
-### atlas_hound.ex
+### burpple_hound.ex
 `@neighbourhood`: Sets the neighbourhood to be scraped. Ensure that it's available on Burpple. <br/>
 `@limit`: Sets when to stop scraping (default 4000)
 
