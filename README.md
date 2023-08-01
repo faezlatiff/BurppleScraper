@@ -13,7 +13,7 @@ Since we need to interact with the page a little, you'll need to install a webdr
    - `iex -S mix run -e "Burpple.Hound.run"`
 ### For Lemon8 Hound
 1. Download and install a Selenium webdriver here (make sure you have java installed): [Selenium Driver](https://selenium-release.storage.googleapis.com/index.html?path=3.9/)
-2. Run the webdriver (I'm using Arch Linux, so a simple `java -jar selenium-server-standalone-3.9.1.jar` would suffice
+2. Run the webdriver (I'm using Arch Linux, so a simple `java -jar selenium-server-standalone-3.9.1.jar` would suffice)
 3. `iex -S mix run -e "Lemon8.Hound.run"`
 
 ## Configuring the Crawler
