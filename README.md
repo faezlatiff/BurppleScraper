@@ -7,18 +7,23 @@ Since we need to interact with the page a little, you'll need to install a webdr
 ### For Burpple Hound
 1. Download and install a chromedriver here (make sure it supports your Google Chrome version): [Versions 115 & later](https://googlechromelabs.github.io/chrome-for-testing/#stable), [Older Versions](https://chromedriver.chromium.org/downloads)
 2. Run in terminal: `chromedriver`
-### Run the scraper
-1. Run in another terminal: `mix deps.get`
-2. Run in terminal:
-   - `iex -S mix run -e "Burpple.Hound.run"`
+
 ### For Lemon8 Hound
 1. Download and install a Selenium webdriver here (make sure you have java installed): [Selenium Driver](https://selenium-release.storage.googleapis.com/index.html?path=3.9/)
 2. Run the webdriver (I'm using Arch Linux, so a simple `java -jar selenium-server-standalone-3.9.1.jar` would suffice)
-3. `iex -S mix run -e "Lemon8.Hound.run"`
+
+## Run the scraper
+1. Run in another terminal: `mix deps.get`
+2. Run in terminal:
+   - `iex -S mix run -e "Burpple.Hound.run"` for Burpple
+   - `iex -S mix run -e "Lemon8.Hound.run"` for Lemon8
 
 ## Configuring the Crawler
 ### burpple_hound.ex
 `@neighbourhood`: Sets the neighbourhood to be scraped. Ensure that it's available on Burpple. <br/>
 `@limit`: Sets when to stop scraping (default 4000)
+`@file_path`: Sets the file path to save data in
+
 ### lemon8_hound.ex
-(in progress)
+`@url`: Sets the url to be scraped, currently scraping #singaporefood page of Lemon8. </br>
+`@file_path`: Sets the file path to save data in
