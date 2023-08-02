@@ -55,6 +55,7 @@ defmodule Lemon8.Hound do
     |> scroll()
 
     find_element(:class, "see-more")
+    |> check_click()
     |> click()
 
   end
@@ -74,6 +75,7 @@ defmodule Lemon8.Hound do
   defp handle_postal(postal) when not is_nil(postal), do: postal
   defp handle_postal(_), do: "no address stated"
 
-
+  defp check_click(nil), do: navigate_back()
+  defp check_click(element), do: element
 
 end
