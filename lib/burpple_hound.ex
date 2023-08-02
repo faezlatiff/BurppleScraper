@@ -33,8 +33,8 @@ defmodule Burpple.Hound do
 
   end
 
-  defp scrape(:scrape_limit_reached, _, _), do: IO.puts("Scraped #{@limit} items, scraper stopping... \nTo scrape more items, change the @limit setting.")
-  defp scrape(:no_more_data), do: IO.puts("No more data to scrape, scraper stopping...")
+  defp scrape(:scrape_limit_reached, _, _), do: IO.puts("[ALERT] Scraped #{@limit} items, scraper stopping... \nTo scrape more items, change the @limit setting.")
+  defp scrape(:no_more_data), do: IO.puts("[ALERT] No more data to scrape, scraper stopping...")
 
   defp into_map({:ok, html_tree}) do
     name = Floki.find(html_tree, ".food-venue-detail--title") |> get_inner_text()
