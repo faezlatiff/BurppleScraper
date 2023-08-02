@@ -1,8 +1,7 @@
 # Scraper with Elixir & Hound    
 An Elixir-based crawler using Hound and Floki, with a webdriver.
 
-## How to run Elixir-based Crawler
-### Getting a webdriver
+## Getting a webdriver
 Since we need to interact with the page a little, you'll need to install a webdriver.
 ### For Burpple Hound
 1. Download and install a chromedriver here (make sure it supports your Google Chrome version): [Versions 115 & later](https://googlechromelabs.github.io/chrome-for-testing/#stable), [Older Versions](https://chromedriver.chromium.org/downloads)
@@ -19,7 +18,7 @@ Since we need to interact with the page a little, you'll need to install a webdr
    - `iex -S mix run -e "Lemon8.Hound.run"` for Lemon8
    - `iex -S mix run -e "Explorest.Hound.run"` for Explorest
    
-## Configuring the Crawler
+## Configuring the scraper
 ### burpple_hound.ex
 `@neighbourhood`: Sets the neighbourhood to be scraped. Ensure that it's available on Burpple. <br/>
 `@limit`: Sets when to stop scraping (default 4000)
