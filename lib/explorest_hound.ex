@@ -15,14 +15,23 @@ defmodule Explorest.Hound do
   end
 
   defp scrape(counter) do
-    # links = []
-    elements = find_all_elements(:class, "jss35")
-    links = Enum.map(elements, fn elem ->
-      attribute_value(elem, "href")
-    end)
+    # need to change class
+    # refresh_page()
+    # :timer.sleep(500)
+    class = set_class(counter)
+    case find_all_elements(:class, class) do
+      [] ->
+        IO.inspect("no elements found, waiting for page to load...")
+        :timer.sleep(500)
+        scrape(counter)
+      list ->
+        list
+        |> Enum.at(counter)
+        |> attribute_value("href")
+        |> store_info
+    end
 
-    store_info(links)
-    # scrape(counter + 1)
+    scrape(counter + 1)
   end
 
   defp check_nil(element) when not is_nil(element), do: element
@@ -38,19 +47,15 @@ defmodule Explorest.Hound do
   defp set_class(0), do: "jss35"
   defp set_class(_), do: "jss28"
 
-  defp store_info(links) do
-    Enum.each(links, fn link ->
-      navigate_to(link)
-      store_info()
-    end)
-  end
-  defp store_info() do
+  defp store_info(link) do
+    navigate_to(link)
     username = find_element(:class, "jss48") |> inner_text()
     map = %{
         "username" => username
       }
 
     File.write(@file_path, Jason.encode!(map) <> "\n", [:append])
+    navigate_back()
   end
 
 end
