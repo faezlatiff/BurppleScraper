@@ -1,5 +1,5 @@
 # Scraper with Elixir & Hound    
-An Elixir-based crawler using Hound and Floki, with a webdriver.
+An Elixir-based crawler using Hound and Floki, with a webdriver. This scraper runs on Elixir 1.4.1 and Erlang/OTP 25.
 
 ## Getting a webdriver
 Since we need to interact with the page a little, you'll need to install a webdriver.
@@ -29,4 +29,5 @@ Since we need to interact with the page a little, you'll need to install a webdr
 `@file_path`: Sets the file path to save data in
 
 ### explorest_hound.ex
-(in progress)
+`@neighbourhood`: Sets the neighbourhood to be scraped. Ensure that it's available on Explorest. <br/>
+`@file_path`: Sets the file path to save data in
