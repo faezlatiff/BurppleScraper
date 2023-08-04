@@ -8,14 +8,25 @@ defmodule Explorest.Hound do
   def run do
     Hound.start_session()
     navigate_to(@url)
-    current_window_handle()
-    |> set_window_size(1657, 802)
-    scrape(19, true)
+    set_size(1657, 802)
+    scrape(0, true)
     Hound.end_session()
+  end
+
+  defp set_size(width, height) do
+    window_id = current_window_handle()
+    try do
+      set_window_size(window_id, width, height)
+    rescue
+      _ ->
+        set_size(width, height)
+    end
   end
 
   defp scrape(counter, first_click) do
     class = set_class(first_click)
+    maybe_scroll(counter)
+
     find_all_elements(:class, class)
     |> store_or_wait(counter)
     scrape(counter + 1, false)
@@ -23,21 +34,18 @@ defmodule Explorest.Hound do
 
   defp store_or_wait(list, counter) when list != [] do
     list
-    |> maybe_scroll(counter)
+    # |> maybe_scroll(counter)
+    |> Enum.at(counter)
     |> attribute_value("href")
     |> store_info()
   end
   defp store_or_wait(_, counter), do: scrape(counter, false)
 
-  defp maybe_scroll(list, counter) do
-    case ends_with_9?(counter) do
-      true ->
-        scroll(Enum.at(list, counter))
-        Enum.at(list, counter)
-      false ->
-        Enum.at(list, counter)
-    end
+  defp maybe_scroll(counter) when counter >= 20 do
+    div(counter, 20)
+    |> scroll()
   end
+  defp maybe_scroll(counter), do: :ok
 
   defp set_class(true), do: "jss35"
   defp set_class(false), do: "jss28"
@@ -88,14 +96,20 @@ defmodule Explorest.Hound do
     String.to_integer(deg_str) + String.to_integer(min_str)/60 + String.to_float(sec_str)/3600
   end
 
-  defp scroll(element) do
-    {width, height} = element_location(element)
-    execute_script("window.scrollTo(#{width},#{height});")
-    element
+  defp scroll(scrolls) when scrolls > 0 do
+    scroll()
+    scroll(scrolls - 1)
+  end
+  defp scroll(_), do: scroll()
+  defp scroll() do
+    div_scroll_script = """
+      var div = document.getElementById('scrollableDiv');
+      div.scrollTop = div.scrollHeight;
+    """
+    execute_script(div_scroll_script)
+    :timer.sleep(1000)
   end
 
-  defp ends_with_9?(number) do
-    Integer.to_string(number) =~ ~r/9$/
-  end
+
 
 end
