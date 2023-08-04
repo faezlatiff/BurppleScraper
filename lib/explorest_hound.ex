@@ -10,29 +10,37 @@ defmodule Explorest.Hound do
     navigate_to(@url)
     current_window_handle()
     |> set_window_size(1657, 802)
-
-    scrape(0)
-
+    scrape(19, true)
+    Hound.end_session()
   end
 
-  defp scrape(counter) do
-    class = set_class(counter)
+  defp scrape(counter, first_click) do
+    class = set_class(first_click)
     find_all_elements(:class, class)
     |> store_or_wait(counter)
-    scrape(counter + 1)
+    scrape(counter + 1, false)
   end
 
   defp store_or_wait(list, counter) when list != [] do
     list
-    |> Enum.at(counter)
+    |> maybe_scroll(counter)
     |> attribute_value("href")
-    |> store_info
+    |> store_info()
+  end
+  defp store_or_wait(_, counter), do: scrape(counter, false)
+
+  defp maybe_scroll(list, counter) do
+    case ends_with_9?(counter) do
+      true ->
+        scroll(Enum.at(list, counter))
+        Enum.at(list, counter)
+      false ->
+        Enum.at(list, counter)
+    end
   end
 
-  defp store_or_wait(_, counter), do: scrape(counter)
-
-  defp set_class(0), do: "jss35"
-  defp set_class(_), do: "jss28"
+  defp set_class(true), do: "jss35"
+  defp set_class(false), do: "jss28"
 
   defp store_info(link) do
     navigate_to(link)
@@ -78,6 +86,16 @@ defmodule Explorest.Hound do
     regex = ~r/(?<degrees>\d+)°\s+(?<minutes>\d+)'\s+(?<seconds>[0-9.]+)"/
     %{"degrees" => deg_str, "minutes" => min_str, "seconds" => sec_str} = Regex.named_captures(regex, coordinate)
     String.to_integer(deg_str) + String.to_integer(min_str)/60 + String.to_float(sec_str)/3600
+  end
+
+  defp scroll(element) do
+    {width, height} = element_location(element)
+    execute_script("window.scrollTo(#{width},#{height});")
+    element
+  end
+
+  defp ends_with_9?(number) do
+    Integer.to_string(number) =~ ~r/9$/
   end
 
 end
