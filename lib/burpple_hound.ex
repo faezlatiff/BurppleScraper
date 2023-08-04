@@ -4,7 +4,7 @@ defmodule Burpple.Hound do
   @neighbourhood "tuas"
   @url "https://www.burpple.com/neighbourhoods/sg/#{@neighbourhood}"
   @limit 4000
-  @file_path "./tmp/#{@neighbourhood}.json"
+  @file_path "./tmp/burpple_#{@neighbourhood}.json"
 
   @spec run :: list
   def run do

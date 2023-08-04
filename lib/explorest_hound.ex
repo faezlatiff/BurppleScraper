@@ -2,7 +2,7 @@ defmodule Explorest.Hound do
   use Hound.Helpers
   @neighbourhood "chinatown"
   @url "https://www.explorest.com/places/singapore/#{@neighbourhood}"
-  @file_path "./tmp/explorest.json"
+  @file_path "./tmp/explorest_#{@neighbourhood}.json"
 
   @spec run :: list
   def run do
