@@ -1,10 +1,10 @@
 defmodule Burpple.Hound do
   use Hound.Helpers
   @base_url "https://www.burpple.com"
-  @neighbourhood "tuas"
+  @neighbourhood "chinatown"
   @url "https://www.burpple.com/neighbourhoods/sg/#{@neighbourhood}"
   @limit 4000
-  @file_path "./tmp/burpple_#{@neighbourhood}.json"
+  @file_path "./tmp/burpple_#{@neighbourhood}_#{Timex.to_date(Timex.now())}.json"
 
   @spec run :: list
   def run do
@@ -43,7 +43,7 @@ defmodule Burpple.Hound do
     body = Floki.find(html_tree, ".food-description-body") |> get_inner_text()
     reviewer_name = Floki.find(html_tree, ".card-item-set--link-title") |> get_inner_text()
     link = Floki.find(html_tree, ".food-image") |> Floki.find("a") |> Floki.attribute("href") |> Enum.at(0) |> make_url()
-    date = Floki.find(html_tree, ".card-item-set--link-subtitle") |> get_inner_text() |> String.split("·") |> Enum.at(0) |> String.trim
+    date = Floki.find(html_tree, ".card-item-set--link-subtitle") |> get_inner_text() |> String.split("·") |> Enum.at(0) |> String.trim |> convert_date_string()
 
     %{
       name: name,
@@ -79,26 +79,111 @@ defmodule Burpple.Hound do
 
   defp make_url(link), do: "#{@base_url}#{link}"
 
-  # defp check_date(map) do
-  #   map
-  #   |> Map.values()
-  #   |> Enum.filter(fn map ->
-  #     String.split(map["date"])
-  #     |> Enum.reverse()
-  #     |> Enum.at(0)
-  #     |> check_year()
-  #     |> Kernel.<(2021)
-  #     end)
-  #   |> Enum.at(0)
-  # end
+  defp convert_date_string(date_string) do
+    cond do
+      String.contains?(date_string, "h") ->
+        hours = get_digit(date_string, "h")
+        {:ok, date} =
+          Timex.shift(Timex.now("Asia/Singapore"), hours: String.to_integer(hours) * -1)
+          |> Timex.to_date()
+          |> Timex.format("{0D}/{0M}/{YYYY}")
 
-  # defp check_year(year_str) do
-  #   try do
-  #     year = String.to_integer(year_str)
-  #   rescue
-  #     _ ->
-  #       year = 2020
-  #   end
-  # end
+        date
+
+      String.contains?(date_string, "d") ->
+        days = get_digit(date_string, "d")
+        {:ok, date} =
+          Timex.shift(Timex.now("Asia/Singapore"), days: String.to_integer(days) * -1)
+          |> Timex.to_date()
+          |> Timex.format("{0D}/{0M}/{YYYY}")
+
+        date
+
+      String.contains?(date_string, "week") ->
+        weeks = get_digit(date_string, "week")
+        {:ok, date} =
+          Timex.shift(Timex.now("Asia/Singapore"), weeks: String.to_integer(weeks) * -1)
+          |> Timex.to_date()
+          |> Timex.format("{0D}/{0M}/{YYYY}")
+
+        date
+
+      String.contains?(date_string, "at") ->
+        date_string
+        |> format_date("at")
+
+      String.contains?(date_string, ",") ->
+        date_string
+        # |> format_date(",")
+
+    end
+  end
+
+  defp get_digit(date_string, type) do
+    date_string
+    |> String.split(type)
+    |> Enum.at(0)
+  end
+
+  defp format_date(date_string, "at") do
+    date_enum =
+      String.split(date_string, "at")
+      |> Enum.at(0)
+      |> String.split(" ")
+
+    month =
+      date_enum
+      |> Enum.at(0)
+      |> month_to_num()
+
+    day =
+      date_enum
+      |> Enum.at(1)
+
+    "#{day}/#{month}/2023"
+  end
+
+  defp format_date(date_string, ",") do
+    date_enum =
+      String.split(date_string, ",")
+      |> Enum.at(0)
+      |> String.split(" ")
+
+    month =
+      date_enum
+      |> Enum.at(0)
+      |> month_to_num()
+
+    day =
+      date_enum
+      |> Enum.at(1)
+
+    year =
+      String.split(date_string, ",")
+      |> Enum.at(1)
+      |> String.trim()
+
+      "#{day}/#{month}/#{year}"
+    end
+
+  defp month_to_num(month) do
+    months = %{
+      "Jan" => "01",
+      "Feb" => "02",
+      "Mar" => "03",
+      "Apr" => "04",
+      "May" => "05",
+      "Jun" => "06",
+      "Jul" => "07",
+      "Aug" => "08",
+      "Sep" => "09",
+      "Oct" => "10",
+      "Nov" => "11",
+      "Dec" => "12"}
+
+    months[month]
+
+  end
+
 
 end
