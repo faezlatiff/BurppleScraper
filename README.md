@@ -19,6 +19,10 @@ Since we need to interact with the page a little, you'll need to install a webdr
    - `iex -S mix run -e "Explorest.Hound.run"` for Explorest
    
 ## Configuring the scraper
+### config.exs
+For burpple, the config should be: `config :hound, driver: "chrome_driver", browser: "chrome_headless", server: true` <br/>
+For lemon8 or explorest, the config should be: `config :hound, host: "http://localhost", port: 4444, path_prefix: "wd/hub/"`
+
 ### burpple_hound.ex
 `@neighbourhood`: Sets the neighbourhood to be scraped. Ensure that it's available on Burpple. <br/>
 `@limit`: Sets when to stop scraping (default 4000)
