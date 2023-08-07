@@ -46,15 +46,13 @@ defmodule Burpple.Hound do
     date = Floki.find(html_tree, ".card-item-set--link-subtitle") |> get_inner_text() |> String.split("·") |> Enum.at(0) |> String.trim
 
     %{
-      name =>
-      %{
-        "address" => address,
-        "title" => title,
-        "body" => body,
-        "reviewer_name" => reviewer_name,
-        "date" => date,
-        "link" => link
-      }
+      name: name,
+      address: address,
+      title: title,
+      body: body,
+      reviewer_name: reviewer_name,
+      date: date,
+      link: link
     }
   end
 

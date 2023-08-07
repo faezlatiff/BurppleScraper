@@ -37,11 +37,10 @@ defmodule Lemon8.Hound do
     poster_name = find_element(:class, "name") |> inner_text()
 
     map = %{
-      title => %{
-        "body" => body,
-        "postal" => postal,
-        "poster_name" => poster_name
-      }
+      title: title,
+      body: body,
+      postal: postal,
+      poster_name: poster_name
     }
 
     File.write(@file_path, Jason.encode!(map) <> "\n", [:append])

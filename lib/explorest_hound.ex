@@ -58,12 +58,11 @@ defmodule Explorest.Hound do
     {lat, lon} = get_lat_lon()
 
     map = %{
-      title => %{
-        "username" => username,
-        "body" => body,
-        "lat" => lat,
-        "lon" => lon
-      }
+      title: title,
+      username: username,
+      body: body,
+      lat: lat,
+      lon: lon
     }
 
     File.write(@file_path, Jason.encode!(map) <> "\n", [:append])
