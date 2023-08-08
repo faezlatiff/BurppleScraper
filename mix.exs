@@ -22,7 +22,8 @@ defmodule Atlas.MixProject do
     [
       {:floki, "~> 0.33.0"},
       {:hound, "~> 1.0"},
-      {:timex, "~> 3.7.7"}
+      {:timex, "~> 3.7.7"},
+      {:levenshtein, "~> 0.3.0"}
     ]
   end
 end

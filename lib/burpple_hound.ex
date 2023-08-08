@@ -1,6 +1,5 @@
 defmodule Burpple.Hound do
   use Hound.Helpers
-  @base_url "https://www.burpple.com"
   @neighbourhood "chinatown"
   @url "https://www.burpple.com/neighbourhoods/sg/#{@neighbourhood}"
   @limit 4000
@@ -40,6 +39,7 @@ defmodule Burpple.Hound do
   defp into_map({:ok, html_tree}) do
     name = Floki.find(html_tree, ".food-venue-detail--title") |> get_inner_text()
     address = Floki.find(html_tree, ".food-venue-detail--address") |> get_inner_text()
+    # postal = get_postal(address)
     title = Floki.find(html_tree, ".food-description-title") |> get_inner_text()
     body = Floki.find(html_tree, ".food-description-body") |> get_inner_text()
     reviewer_name = Floki.find(html_tree, ".card-item-set--link-title") |> get_inner_text()
@@ -49,6 +49,7 @@ defmodule Burpple.Hound do
     %{
       name: name,
       address: address,
+      # postal: postal,
       title: title,
       body: body,
       reviewer_name: reviewer_name,
@@ -184,5 +185,28 @@ defmodule Burpple.Hound do
 
   end
 
+  # defp get_postal(address) do
+  #   IO.inspect("checking address")
+  #   enum =
+  #     read_json_file("postal_codes_22_06_2023.json")
+  #     |> Enum.map(fn tuple ->
+  #         # Levenshtein.distance(map["address"], address)
+  #         tuple
+  #         |> elem(1)
+  #         |> Map.get("address")
+  #         |> Levenshtein.distance(String.upcase(address))
+  #       end)
+  #   Enum.sort(enum)
+  #   |> Enum.reverse()
+  #   |> Enum.at(0)
+
+  # end
+
+  # defp read_json_file(file_path) do
+  #   File.read(file_path)
+  #   |> elem(1)
+  #   |> Jason.decode()
+  #   |> elem(1)
+  # end
 
 end
