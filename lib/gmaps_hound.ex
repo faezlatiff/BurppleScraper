@@ -3,6 +3,7 @@ defmodule GMaps.Hound do
   @url "https://www.google.com/maps"
   @search_term "food near me"
   @file_path "./tmp/gmaps_#{Timex.now() |> Timex.to_date() |> Timex.format("{0D}_{0M}_{YYYY}") |> elem(1)}.json"
+  @limit 100
 
   @spec run :: list
   def run do
@@ -10,22 +11,26 @@ defmodule GMaps.Hound do
     navigate_to(@url)
     window_id = current_window_handle()
     set_window_size(window_id, 1280, 972)
+    fill_search_box()
     scrape()
-    Hound.end_session()
   end
 
-  defp scrape() do
+  defp fill_search_box() do
     search_box = find_element(:id, "searchboxinput")
-
     search_box
     |> fill_field(@search_term)
-    # |> submit_element()
+    wait(500)
 
     find_element(:id, "cell0x0")
     |> click()
+  end
+
+  defp scrape(counter \\ 0) when counter <= @limit do
 
     feed = find_element(:css, "div[role='feed']")
+
     find_all_within_element(feed, :tag, "a")
+    |> Enum.drop(counter)
     |> Enum.each(fn elem ->
       click(elem)
       wait(500)
@@ -34,8 +39,11 @@ defmodule GMaps.Hound do
       reviews = get_reviews()
       store(name, address, reviews)
     end)
-
+    scroll()
+    scrape(counter + 7)
   end
+
+  defp scrape(_), do: Hound.end_session()
 
   defp store(name, address, reviews \\ []) do
     map = %{
@@ -55,15 +63,15 @@ defmodule GMaps.Hound do
     wait(500)
 
     # click Sort
-    find_element(:css, "img[alt='Sort']")
-    |> click()
-    wait(500)
+    # find_element(:css, "img[alt='Sort']")
+    # |> click()
+    # wait(500)
 
     # click Newest
-    find_element(:id, "action-menu")
-    |> find_within_element(:css, "div[data-index='1']")
-    |> click()
-    wait(100)
+    # find_element(:id, "action-menu")
+    # |> find_within_element(:css, "div[data-index='1']")
+    # |> click()
+    # wait(100)
 
     # get review details
     find_all_elements(:class, "MyEned")
@@ -71,8 +79,17 @@ defmodule GMaps.Hound do
         find_all_within_element(elem, :tag, "span")
         |> Enum.at(0)
         |> inner_text()
-      end
-    )
+      end)
+
+  end
+
+  defp scroll() do
+    div_scroll_script = """
+      var div = document.querySelectorAll('[role="feed"]')[0] ;
+      div.scrollTop = div.scrollHeight;
+    """
+    execute_script(div_scroll_script)
+    wait(100)
   end
 
 
