@@ -27,6 +27,9 @@ defmodule GMaps.Hound do
     find_all_within_element(feed, :tag, "a")
     |> Enum.each(fn elem ->
       click(elem)
+      find_element(:css, "button[data-item-id='address']")
+      |> inner_text()
+      |> IO.inspect()
       wait(12312313123)
 
     end)
