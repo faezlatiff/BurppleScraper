@@ -31,8 +31,8 @@ defmodule GMaps.Hound do
       wait(500)
       name = find_element(:tag, "h1") |> inner_text()
       address = find_element(:css, "button[data-item-id='address']")|> inner_text()
-      # reviews = get_reviews()
-      store(name, address)
+      reviews = get_reviews()
+      store(name, address, reviews)
     end)
 
   end
@@ -48,22 +48,29 @@ defmodule GMaps.Hound do
   end
 
   defp get_reviews() do
+    # click Reviews
     find_all_elements(:css, "button[role='tab']")
     |> Enum.at(1)
     |> click()
+    wait(500)
 
-    # find_element(:css, "img[alt='Sort']")
-    # |> click()
+    # click Sort
+    find_element(:css, "img[alt='Sort']")
+    |> click()
+    wait(500)
 
-    # find_element(:css, "div[data-index='1']")
-    # |> click()
+    # click Newest
+    find_element(:id, "action-menu")
+    |> find_within_element(:css, "div[data-index='1']")
+    |> click()
+    wait(100)
 
+    # get review details
     find_all_elements(:class, "MyEned")
-    |> Enum.each(fn elem ->
+    |> Enum.map(fn elem ->
         find_all_within_element(elem, :tag, "span")
-        # |> Enum.at(0)
-        # |> inner_text()
-        |> IO.inspect()
+        |> Enum.at(0)
+        |> inner_text()
       end
     )
   end
@@ -72,4 +79,9 @@ defmodule GMaps.Hound do
   defp wait(time \\ 1000) do
     :timer.sleep(time)
   end
+
+  # defp wait(elem, time \\ 500) do
+  #   :timer.sleep(time)
+  #   elem
+  # end
 end
