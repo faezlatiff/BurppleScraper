@@ -19,6 +19,7 @@ defmodule GMaps.Hound do
 
     search_box
     |> fill_field(@search_term)
+    # |> submit_element()
 
     find_element(:id, "cell0x0")
     |> click()
@@ -27,13 +28,23 @@ defmodule GMaps.Hound do
     find_all_within_element(feed, :tag, "a")
     |> Enum.each(fn elem ->
       click(elem)
+      wait(500)
       name = find_element(:tag, "h1") |> inner_text()
       address = find_element(:css, "button[data-item-id='address']")|> inner_text()
-      reviews = get_reviews()
-      wait(12312313123)
-
+      # reviews = get_reviews()
+      store(name, address)
     end)
 
+  end
+
+  defp store(name, address, reviews \\ []) do
+    map = %{
+      name: name,
+      address: address,
+      reviews: reviews
+    }
+
+    File.write(@file_path, Jason.encode!(map) <> "\n", [:append])
   end
 
   defp get_reviews() do
@@ -41,11 +52,20 @@ defmodule GMaps.Hound do
     |> Enum.at(1)
     |> click()
 
-    find_element(:css, "img[alt='Sort']")
-    |> click()
+    # find_element(:css, "img[alt='Sort']")
+    # |> click()
 
-    find_element(:css, "div[data-index='1']")
-    |> click()
+    # find_element(:css, "div[data-index='1']")
+    # |> click()
+
+    find_all_elements(:class, "MyEned")
+    |> Enum.each(fn elem ->
+        find_all_within_element(elem, :tag, "span")
+        # |> Enum.at(0)
+        # |> inner_text()
+        |> IO.inspect()
+      end
+    )
   end
 
 
