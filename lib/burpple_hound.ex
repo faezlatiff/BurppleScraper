@@ -28,7 +28,6 @@ defmodule Burpple.Hound do
           inner_html(element)
           |> Floki.parse_document()
           |> into_map()
-          # |> check_date()
           |> store(file_path, offset)
     end)
     check_visible_and_click(file_path, offset)
@@ -44,7 +43,7 @@ defmodule Burpple.Hound do
     title = Floki.find(html_tree, ".food-description-title") |> get_inner_text()
     body = Floki.find(html_tree, ".food-description-body") |> get_inner_text()
     reviewer_name = Floki.find(html_tree, ".card-item-set--link-title") |> get_inner_text()
-    link = Floki.find(html_tree, ".food-image") |> Floki.find("a") |> Floki.attribute("href") |> Enum.at(0) |> make_url()
+    link = Floki.find(html_tree, ".food-image") |> Floki.find("img") |> Floki.attribute("src") |> Enum.at(0)
     date = Floki.find(html_tree, ".card-item-set--link-subtitle") |> get_inner_text() |> String.split("·") |> Enum.at(0) |> String.trim |> convert_date_string()
 
     %{
@@ -78,8 +77,6 @@ defmodule Burpple.Hound do
   end
 
   defp get_inner_text(html_element), do: html_element |> Floki.text() |> String.trim
-
-  defp make_url(link), do: "#{@base_url}#{link}"
 
   defp convert_date_string(date_string) do
     cond do
