@@ -4,11 +4,13 @@ defmodule Burpple.Hound do
   @neighbourhood "chinatown"
   @url "https://www.burpple.com/neighbourhoods/sg/#{@neighbourhood}"
   @limit 4000
-  @file_path "./tmp/burpple_#{@neighbourhood}_#{Timex.to_date(Timex.now())}.json"
+
+  @file_path "./tmp/burpple_#{@neighbourhood}_#{Timex.now() |> Timex.to_date() |> Timex.format("{0D}_{0M}_{YYYY}") |> elem(1)}.json"
 
   @spec run :: list
   def run do
     Hound.start_session()
+
     navigate_to(@url)
 
     offset = 0
