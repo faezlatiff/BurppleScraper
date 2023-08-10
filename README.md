@@ -1,5 +1,5 @@
 # Scraper with Elixir & Hound    
-An Elixir-based crawler using Hound and Floki, with a webdriver. This scraper runs on Elixir 1.4.1 and Erlang/OTP 25.
+An Elixir-based crawler using Hound and Floki, with a webdriver. This scraper ran well with Elixir 1.4.1 and Erlang/OTP 25, on Arch Linux.
 
 ## Getting a webdriver
 Since we need to interact with the page a little, you'll need to install a webdriver.
@@ -9,8 +9,7 @@ Since we need to interact with the page a little, you'll need to install a webdr
 
 ### For Lemon8, Explorest & GMaps Hound
 1. Download and install a Selenium webdriver here (make sure you have java installed): [Selenium Driver](https://selenium-release.storage.googleapis.com/index.html?path=3.9/)
-2. Run the webdriver (I'm using Arch Linux, so a simple `java -jar selenium-server-standalone-3.9.1.jar` would suffice)
-
+2. Run the webdriver with`java -jar selenium-server-standalone-3.9.1.jar`
 ## Run the scraper
 1. Run in terminal: `mix deps.get`
 2. Run in terminal:
