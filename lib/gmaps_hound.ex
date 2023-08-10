@@ -4,6 +4,7 @@ defmodule GMaps.Hound do
   @search_term "food near me"
   @file_path "./tmp/gmaps_#{Timex.now() |> Timex.to_date() |> Timex.format("{0D}_{0M}_{YYYY}") |> elem(1)}.json"
   @limit 100
+  @panels_skip 4
 
   @spec run :: list
   def run do
@@ -25,7 +26,7 @@ defmodule GMaps.Hound do
     |> click()
   end
 
-  defp scrape(counter \\ 0) when counter <= @limit do
+  defp scrape(counter \\ @panels_skip) when counter <= @limit do
 
     feed = find_element(:css, "div[role='feed']")
 
@@ -34,7 +35,7 @@ defmodule GMaps.Hound do
     |> Enum.each(fn elem ->
       click(elem)
       wait(500)
-      name = find_element(:tag, "h1") |> inner_text()
+      name = find_all_elements(:tag, "h1") |> Enum.reject(fn elem -> elem |> inner_text == "Sponsored" end)
       address = find_element(:css, "button[data-item-id='address']")|> inner_text()
       reviews = get_reviews()
       store(name, address, reviews)
@@ -62,25 +63,27 @@ defmodule GMaps.Hound do
     |> click()
     wait(500)
 
-    # click Sort
-    # find_element(:css, "img[alt='Sort']")
-    # |> click()
-    # wait(500)
-
-    # click Newest
-    # find_element(:id, "action-menu")
-    # |> find_within_element(:css, "div[data-index='1']")
-    # |> click()
-    # wait(100)
-
     # get review details
     find_all_elements(:class, "MyEned")
     |> Enum.map(fn elem ->
-        find_all_within_element(elem, :tag, "span")
-        |> Enum.at(0)
-        |> inner_text()
+        parse_review(elem)
       end)
 
+  end
+
+  defp parse_review(elem) do
+    user =
+      find_all_elements(:css, "button[jsaction='pane.review.reviewerLink']")
+      |> Enum.at(1)
+      |> find_all_within_element(:tag, "div")
+      |> Enum.at(0)
+      |> inner_text()
+
+    review = find_all_within_element(elem, :tag, "span")
+      |> Enum.at(0)
+      |> inner_text()
+
+    %{user => review}
   end
 
   defp scroll() do
