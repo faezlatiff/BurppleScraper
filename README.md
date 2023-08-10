@@ -7,7 +7,7 @@ Since we need to interact with the page a little, you'll need to install a webdr
 1. Download and install a chromedriver here (make sure it supports your Google Chrome version): [Versions 115 & later](https://googlechromelabs.github.io/chrome-for-testing/#stable), [Older Versions](https://chromedriver.chromium.org/downloads)
 2. Run in terminal: `chromedriver`
 
-### For Lemon8 Hound & Explorest Hound
+### For Lemon8, Explorest & GMaps Hound
 1. Download and install a Selenium webdriver here (make sure you have java installed): [Selenium Driver](https://selenium-release.storage.googleapis.com/index.html?path=3.9/)
 2. Run the webdriver (I'm using Arch Linux, so a simple `java -jar selenium-server-standalone-3.9.1.jar` would suffice)
 
