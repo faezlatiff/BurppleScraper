@@ -17,6 +17,7 @@ Since we need to interact with the page a little, you'll need to install a webdr
    - `iex -S mix run -e "Burpple.Hound.run"` for Burpple
    - `iex -S mix run -e "Lemon8.Hound.run"` for Lemon8
    - `iex -S mix run -e "Explorest.Hound.run"` for Explorest
+   - `iex -S mix run -e "GMaps.Hound.run"` for Google Maps
    
 ## Configuring the scraper
 ### config.exs
