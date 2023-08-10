@@ -38,9 +38,9 @@ For lemon8 or explorest, the config should be: `config :hound, host: "http://loc
 
 ### gmaps_hound.ex
 `@search_term`: Sets the search term to input into Google Maps <br/>
-`@file_path`: Sets the file path to save data in
-`@limit`: Sets when to stop scraping (default 100)
-`@panels_skip`: Sets the number of panels to skip (to avoid clicking ads; see photo below)
+`@file_path`: Sets the file path to save data in <br/>
+`@limit`: Sets when to stop scraping (default 100) <br/>
+`@panels_skip`: Sets the number of panels to skip (to avoid clicking ads; see photo below) <br/>
 ![image](https://github.com/faezlatiff/Midas/assets/113258483/b41fe428-4b25-43d2-8994-5619a53790d8)
 
 
